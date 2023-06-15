@@ -1,11 +1,7 @@
 import './App.css';
 import React, { FC, useEffect, useState } from 'react';
-import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './Connect';
-
-enum ConnectionTypes {
-  myAlgo,
-  pera
-}
+import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './util/connect';
+import { ConnectionTypes } from './types';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -85,8 +81,8 @@ const App: FC = () => {
         <h1>Algorand Connector</h1>
         <h4>{isConnected ? `Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
         <div className={`connect-button-container`}>{'Connect Now'}
-          <button className="connect-button-pera" onClick={startConnectionPera}></button>
-          <button className="connect-button-my-algo" onClick={startConnectionMyAlgo}></button>
+          <button className="connect-button connect-button-pera" onClick={startConnectionPera}>Pera Wallet</button>
+          <button className="connect-button connect-button-my-algo" onClick={startConnectionMyAlgo}>My Algo</button>
         </div>
       </header>
     </div>
