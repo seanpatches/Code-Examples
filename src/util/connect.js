@@ -1,4 +1,3 @@
-// @ts-nocheck
 import WalletConnect from "@walletconnect/client";
 import MyAlgo from "@randlabs/myalgo-connect";
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
