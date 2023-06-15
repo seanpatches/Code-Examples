@@ -25,6 +25,7 @@ const App: FC = () => {
     setUserWalletAddress(null);
     setConnectionType(null);
     setConnected(false);
+    connectionType === ConnectionTypes.pera && checkForPeraConnection() && peraWalletConnect.disconnect();
   }
 
   const setUserConnection = (userAlgoWallet: string, connectionType: ConnectionTypes): void => {
