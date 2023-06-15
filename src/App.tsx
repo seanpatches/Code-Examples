@@ -8,6 +8,7 @@ import TransactionButtons from './components/TransactionButton';
 import { formatTransaction } from './util/transactions/formatTransaction';
 import { signTransactionMyConnect, signTransactionPera } from './util/transactions/transactions';
 import { clearAllTimeouts } from './helpers/timeout';
+import { throwErrow } from './helpers/errors';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -92,11 +93,16 @@ const App: FC = () => {
       //set wallet in state to retrieved wallet, if found, if not throw error
       userAlgoWallet
         ? setUserConnection(userAlgoWallet, ConnectionTypes.pera)
-        : alert("No found wallet.")
-    } catch(err) {
-        peraWalletConnect.disconnect();
-        clearAllTimeouts();
-        alert("Error completing wallet connection.")
+        : throwErrow("No wallet found")
+    } catch(err: unknown) {
+      peraWalletConnect.disconnect();
+      clearAllTimeouts();
+      //do not display alert when user manually closes connection attempt, Pera throws error
+      if((err as Error).message && (err as Error).message === "Connect modal is closed by user"){
+        return;
+      } else {
+        alert((err as Error).message)
+      }
     }
   }
 
@@ -105,9 +111,11 @@ const App: FC = () => {
       const userAddresses = await myAlgoWalletConnect().connect();
       const userAlgoWallet = userAddresses[0].address;
       //set wallet in state to retrieved wallet, if found, if not throw error
-      userAlgoWallet ? setUserConnection(userAlgoWallet, ConnectionTypes.myAlgo) : alert("No found wallet.")
+      userAlgoWallet
+        ? setUserConnection(userAlgoWallet, ConnectionTypes.myAlgo)
+        : throwErrow("No wallet found")
     } catch(err: unknown) {
-        alert("Error completing wallet connection.")
+        alert((err as Error).message || "Error completing wallet connection.")
     }
   }
 
