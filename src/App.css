@@ -51,7 +51,15 @@
 
 .connect-button {
   padding: 12px;
-  width: 100px;
+  width: 150px;
+  margin-top: 10px;
+  color: black;
+  border-radius: 22px;
+}
+
+.transaction-button {
+  padding: 12px;
+  width: 150px;
   margin-top: 10px;
   color: black;
   border-radius: 22px;
