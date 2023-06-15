@@ -1,4 +1,4 @@
-import algosdk from 'algosdk';
+import { Transaction } from 'algosdk';
 
 export enum ConnectionTypes {
   myAlgo = "MyAlgo",
@@ -14,7 +14,7 @@ export type SuggestedParameters = {
   genesisHash: string,
 }
 
-export type FormattedPeraTransaction = algosdk.Transaction | {
+export type FormattedPeraTransaction = Transaction | {
   from: string; 
   to: string; 
   amount: number; 
@@ -29,7 +29,7 @@ export type FormattedPeraTransaction = algosdk.Transaction | {
   genesisHash: string; 
 }
 
-export type FormattedMyAlgoTransaction = algosdk.Transaction | {
+export type FormattedMyAlgoTransaction = Transaction | {
   from: string;
   to: string;
   amount: number;
