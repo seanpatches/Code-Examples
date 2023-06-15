@@ -1,21 +1,27 @@
 import './App.css';
 import React, { Component } from 'react';
+import { connectMyAlgoWallet } from './Connect';
 
 const initialState = {
-  walletAddress: null,
+  userWalletAddress: null,
   connection: false,
   transaction: null,
   connectionType: null,
 }
 
 interface appState {
-  walletAddress: string | null,
+  userWalletAddress: string | null,
   connection: boolean,
   transaction: string | null,
   connectionType: string | null,
 }
 
-class App extends Component<React.Component> {
+enum connectionTypes {
+  myAlgo,
+  pera
+}
+
+class App extends Component<React.ComponentClass> {
   state: appState = initialState;
   constructor(props: {}){
     super(props)
@@ -24,38 +30,48 @@ class App extends Component<React.Component> {
   componentWillMount(): void {
     console.log('before')
     //check localstorage for continued connection
-  }  
+  }
+
   componentDidMount(): void {
 
   }
 
-  startConnection(){
-    //launch connection, depending on wallet connection type
+  launchTransaction() {
+    //check connectionType in state, launch either transaction type accordingly
   }
 
-  launchTransaction(){
-
-  }
-
-  peraTransactionStart(){
+  peraTransactionStart() {
     
   }
 
-  myAlgoTransactionStart(){
+  myAlgoTransactionStart() {
     
   }
 
-  peraConnectionStart(){
-
+  async startConnectionPera() {
+    
   }
 
-  myAlgoConnectionStart(){
-
+  async startConnectionMyAlgo() {
+    //prompt myAlgo login
+    try {
+      const userAddresses = await connectMyAlgoWallet().connect();
+      const userAlgoWallet = userAddresses[0].address;
+      //set wallet in state to retrieved wallet, if found, if not throw error
+      userAlgoWallet
+        ? this.setState({
+            userWalletAddress: userAlgoWallet,
+            connectionType: connectionTypes.myAlgo
+          })
+        : alert("No found wallet.")
+    } catch(err) {
+        alert("Error completing wallet connection.")
+    }
   }
 
   render() {
     const {
-      walletAddress,
+      userWalletAddress,
       connection,
       transaction,
       connectionType
@@ -67,8 +83,8 @@ class App extends Component<React.Component> {
           <h1>Algorand Connector</h1>
           <h3>Connect your wallet using Pera or MyAlgo</h3>
           <div className={`connect-button-container`}>{'Connect Now'}
-            <button className="connect-button-pera"></button>
-            <button className="connect-button-my-algo"></button>
+            <button className="connect-button-pera" onClick={this.startConnectionPera}></button>
+            <button className="connect-button-my-algo" onClick={this.startConnectionMyAlgo}></button>
           </div>
         </header>
       </div>
