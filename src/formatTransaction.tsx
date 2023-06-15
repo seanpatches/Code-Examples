@@ -16,24 +16,24 @@ export const formatTransaction = async (
 	const enc = new TextEncoder();
 
 	const txn = isPera
-			? {
-					...suggestedParams,
-					from: address,
-					to: address,
-					amount: amountToPay,
-					type: "axfer",
-					assetIndex: 1,
-					note: enc.encode(note),
-			} : algosdk.makeAssetTransferTxnWithSuggestedParams(
-					address,
-					address,
-					undefined,
-					undefined,
-					amountToPay,
-					enc.encode(note),
-					1,
-					suggestedParams
-			)
+		? {
+				...suggestedParams,
+				from: address,
+				to: address,
+				amount: amountToPay,
+				type: "axfer",
+				assetIndex: 1,
+				note: enc.encode(note),
+		} : algosdk.makeAssetTransferTxnWithSuggestedParams(
+				address,
+				address,
+				undefined,
+				undefined,
+				amountToPay,
+				enc.encode(note),
+				1,
+				suggestedParams
+		)
             
 	return txn;
 };
