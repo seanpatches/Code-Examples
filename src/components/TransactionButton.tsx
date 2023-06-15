@@ -8,10 +8,10 @@ type TransactionButtonsProps = {
 const TransactionButtons: FC<TransactionButtonsProps> = ({ launchTransaction, disconnectWallet }) => {
 
   return (
-    <div>
-      <button onClick={launchTransaction}>Test Transaction</button>
-      <button onClick={disconnectWallet}>Disconnect Wallet</button>
-    </div>
+    <>
+      <button className="transaction-button" onClick={launchTransaction}>Test Transaction</button>
+      <button className="transaction-button" onClick={disconnectWallet}>Disconnect Wallet</button>
+    </>
   )
 }
 

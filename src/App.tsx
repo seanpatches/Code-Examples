@@ -1,7 +1,7 @@
 import './App.css';
 import React, { FC, useEffect, useState } from 'react';
 import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './util/connect';
-import { ConnectionTypes, FormattedMyAlgoTransaction, FormattedPeraTransaction, SignedTransaction } from './types';
+import { ConnectionTypes, FormattedMyAlgoTransaction, FormattedPeraTransaction, SignedTransaction, TransactionStatusTypes } from './types';
 import ConnectButtons from './components/ConnectButtons';
 import LoadingScreen from './components/Loading';
 import TransactionButtons from './components/TransactionButton';
@@ -11,7 +11,7 @@ import { signTransactionMyConnect, signTransactionPera } from './util/transactio
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
   const [connected, setConnected] = useState<boolean>(false);
-  const [transactionId, setTransactionId] = useState<string | null>(null);
+  const [signedTransaction, setSignedTransaction] = useState<string | null>(null);
   const [connectionType, setConnectionType] = useState<ConnectionTypes | null>();
   const [loading, setLoading] = useState<boolean>(false);
   
@@ -21,10 +21,11 @@ const App: FC = () => {
     peraSustainedCheck();
   })
 
-  const disconnectWallet = () => {
+  const disconnectWallet = (): void => {
     setUserWalletAddress(null);
     setConnectionType(null);
     setConnected(false);
+    setSignedTransaction(null);
     connectionType === ConnectionTypes.pera && checkForPeraConnection() && peraWalletConnect.disconnect();
   }
 
@@ -32,6 +33,7 @@ const App: FC = () => {
     setUserWalletAddress(userAlgoWallet);
     setConnectionType(connectionType);
     setConnected(true);
+    setSignedTransaction(null);
   }
 
   const peraSustainedCheck = (): boolean => {
@@ -48,6 +50,7 @@ const App: FC = () => {
 
   const launchTransaction = async() => {
     //load during request wait
+    setSignedTransaction(null);
     setLoading(true);
     //check connectionType in state, launch either transaction type accordingly
     const isPera = connectionType === ConnectionTypes.pera;
@@ -55,10 +58,18 @@ const App: FC = () => {
     const amount = 1;
     const note = "Test Transaction on Algorand";
     const transaction = await formatTransaction(isPera, amount, userWalletAddress!, note);
-    const signedTransacton = isPera
+    const signedTransaction = isPera
       ? await peraTransactionStart(transaction)
       : await myAlgoTransactionStart(transaction);
-    console.log(signedTransacton);
+    setLoading(false);
+    const { signed_txn, status } = signedTransaction;
+
+    //if signed_txn was obtained, set it in state for visibility, and prepare to rawsend
+    if(status === TransactionStatusTypes.success && signed_txn) {
+      setSignedTransaction(signed_txn);
+    } else {
+      alert("An error has occurred in signing your transaction.")
+    }
   }
 
   const peraTransactionStart = async (peraTransactionToSign: FormattedPeraTransaction ): Promise<SignedTransaction> => {
@@ -102,17 +113,18 @@ const App: FC = () => {
   return (
     <div className="App">
       <LoadingScreen loading={loading}/>
-      <header className="App-header">
-        <h1>Algorand Connector</h1>
-        <h4 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
-        <div className={`connect-button-container`}>{'Connect Now'}
+      <div className="app-container">
+        <h2>Algorand Connector</h2>
+        <h6 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h6>
+        <div className={"connect-button-container"}>{"Connect Now"}
           {isConnected ? (
-              <TransactionButtons disconnectWallet={disconnectWallet} launchTransaction={launchTransaction} />
-            ) : (
-              <ConnectButtons startConnectionMyAlgo={startConnectionMyAlgo} startConnectionPera={startConnectionPera} />
+            <TransactionButtons disconnectWallet={disconnectWallet} launchTransaction={launchTransaction} />
+          ) : (
+            <ConnectButtons startConnectionMyAlgo={startConnectionMyAlgo} startConnectionPera={startConnectionPera} />
           )}
+          <h4 className="button-footer">{signedTransaction ? `Signed Transaction:\n${signedTransaction}` : "Please ensure you are connected to TestNet"}</h4>
         </div>
-      </header>
+      </div>
     </div>
   );
 }
