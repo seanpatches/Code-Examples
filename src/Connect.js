@@ -11,4 +11,4 @@ export const walletConnect = new WalletConnect({
 
 export const peraWalletConnect = new PeraWalletConnect();
 
-export const connectMyAlgoWallet = () => new MyAlgo();
+export const myAlgoWalletConnect = () => new MyAlgo();

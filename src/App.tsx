@@ -1,6 +1,6 @@
 import './App.css';
-import React, { Component, FC, useEffect, useState } from 'react';
-import { connectMyAlgoWallet, peraWalletConnect } from './Connect';
+import React, { FC, useEffect, useState } from 'react';
+import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './Connect';
 
 enum ConnectionTypes {
   myAlgo,
@@ -14,7 +14,6 @@ const App: FC = () => {
   const [connectionType, setConnectionType] = useState<ConnectionTypes | null>();
   
   useEffect(() => {
-    console.log('before')
     //check localstorage for continued connection on page load
   }, [])
 
@@ -51,9 +50,10 @@ const App: FC = () => {
   }
 
   const startConnectionMyAlgo = async (): Promise<void> => {
-    //prompt myAlgo login
+    //check for sustained connection
+
     try {
-      const userAddresses = await connectMyAlgoWallet().connect();
+      const userAddresses = await myAlgoWalletConnect().connect();
       const userAlgoWallet = userAddresses[0].address;
       //set wallet in state to retrieved wallet, if found, if not throw error
       userAlgoWallet ? setUserConnection(userAlgoWallet, ConnectionTypes.myAlgo) : alert("No found wallet.")
