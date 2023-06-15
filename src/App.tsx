@@ -2,6 +2,7 @@ import './App.css';
 import React, { FC, useEffect, useState } from 'react';
 import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './util/connect';
 import { ConnectionTypes } from './types';
+import ConnectButtons from './components/ConnectButtons';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -35,6 +36,7 @@ const App: FC = () => {
 
   const launchTransaction = () => {
     //check connectionType in state, launch either transaction type accordingly
+    console.log("transaction trigger");
   }
 
   const peraTransactionStart = () => {
@@ -81,8 +83,11 @@ const App: FC = () => {
         <h1>Algorand Connector</h1>
         <h4>{isConnected ? `Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
         <div className={`connect-button-container`}>{'Connect Now'}
-          <button className="connect-button connect-button-pera" onClick={startConnectionPera}>Pera Wallet</button>
-          <button className="connect-button connect-button-my-algo" onClick={startConnectionMyAlgo}>My Algo</button>
+          {isConnected ? (
+              <button onClick={launchTransaction}>Test Transaction</button>
+            ) : (
+              <ConnectButtons startConnectionMyAlgo={startConnectionMyAlgo} startConnectionPera={startConnectionPera} />
+          )}
         </div>
       </header>
     </div>
