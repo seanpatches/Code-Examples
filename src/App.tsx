@@ -5,7 +5,8 @@ import { ConnectionTypes, FormattedMyAlgoTransaction, FormattedPeraTransaction }
 import ConnectButtons from './components/ConnectButtons';
 import LoadingScreen from './components/Loading';
 import TransactionButtons from './components/TransactionButton';
-import { formatTransaction } from './formatTransaction';
+import { formatTransaction } from './util/transactions/formatTransaction';
+import { signTransactionMyConnect, signTransactionPera } from './util/transactions/transactions';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -57,12 +58,15 @@ const App: FC = () => {
     isPera ? peraTransactionStart(transaction) : myAlgoTransactionStart(transaction);
   }
 
-  const peraTransactionStart = (peraTransactionToSign: FormattedPeraTransaction ) => {
+  const peraTransactionStart = async (peraTransactionToSign: FormattedPeraTransaction ) => {
     console.log(peraTransactionToSign)
+    const signatureResponse = await signTransactionPera(peraTransactionToSign, 'test', userWalletAddress!);
+    console.log(signatureResponse);
   }
 
-  const myAlgoTransactionStart = (myAlgoTransactionToSign: FormattedMyAlgoTransaction) => {
+  const myAlgoTransactionStart = async (myAlgoTransactionToSign: FormattedMyAlgoTransaction) => {
     console.log(myAlgoTransactionToSign)
+    const signatureResponse = await signTransactionMyConnect(myAlgoTransactionToSign, userWalletAddress!);
   }
 
   const startConnectionPera = async (): Promise<void> => {
