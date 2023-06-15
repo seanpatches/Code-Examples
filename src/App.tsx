@@ -5,6 +5,7 @@ import { ConnectionTypes } from './types';
 import ConnectButtons from './components/ConnectButtons';
 import { fetchSuggestedParams } from './services/requests';
 import LoadingScreen from './components/Loading';
+import TransactionButton from './components/TransactionButton';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -92,7 +93,7 @@ const App: FC = () => {
         <h4>{isConnected ? `Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
         <div className={`connect-button-container`}>{'Connect Now'}
           {isConnected ? (
-              <button onClick={launchTransaction}>Test Transaction</button>
+              <TransactionButton launchTransaction={launchTransaction} />
             ) : (
               <ConnectButtons startConnectionMyAlgo={startConnectionMyAlgo} startConnectionPera={startConnectionPera} />
           )}

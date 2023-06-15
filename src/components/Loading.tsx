@@ -4,9 +4,7 @@ type LoadingScreenProps = {
   loading: boolean;
 };
 
-const LoadingScreen: FC<LoadingScreenProps> = ({
-  loading
-}) => {
+const LoadingScreen: FC<LoadingScreenProps> = ({ loading }) => {
 
   return (
     <div className={`loader ${loading ? "loader-show" : "loader-hide"}`}>LOADING...</div>
