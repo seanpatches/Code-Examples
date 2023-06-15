@@ -10,6 +10,11 @@ export enum TransactionStatusTypes {
   success
 }
 
+export type SignedTransaction = {
+  status: TransactionStatusTypes,
+  signed_txn?: string
+}
+
 export type SuggestedParameters = {
   flatFee: boolean,
   fee: number,

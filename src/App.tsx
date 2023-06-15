@@ -1,7 +1,7 @@
 import './App.css';
 import React, { FC, useEffect, useState } from 'react';
 import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './util/connect';
-import { ConnectionTypes, FormattedMyAlgoTransaction, FormattedPeraTransaction } from './types';
+import { ConnectionTypes, FormattedMyAlgoTransaction, FormattedPeraTransaction, SignedTransaction } from './types';
 import ConnectButtons from './components/ConnectButtons';
 import LoadingScreen from './components/Loading';
 import TransactionButtons from './components/TransactionButton';
@@ -55,18 +55,18 @@ const App: FC = () => {
     const amount = 1;
     const note = "Test Transaction on Algorand";
     const transaction = await formatTransaction(isPera, amount, userWalletAddress!, note);
-    isPera ? peraTransactionStart(transaction) : myAlgoTransactionStart(transaction);
+    const signedTransacton = isPera
+      ? await peraTransactionStart(transaction)
+      : await myAlgoTransactionStart(transaction);
+    console.log(signedTransacton);
   }
 
-  const peraTransactionStart = async (peraTransactionToSign: FormattedPeraTransaction ) => {
-    console.log(peraTransactionToSign)
-    const signatureResponse = await signTransactionPera(peraTransactionToSign, 'test', userWalletAddress!);
-    console.log(signatureResponse);
+  const peraTransactionStart = async (peraTransactionToSign: FormattedPeraTransaction ): Promise<SignedTransaction> => {
+    return await signTransactionPera(peraTransactionToSign, 'Test Transaction', userWalletAddress!);
   }
 
-  const myAlgoTransactionStart = async (myAlgoTransactionToSign: FormattedMyAlgoTransaction) => {
-    console.log(myAlgoTransactionToSign)
-    const signatureResponse = await signTransactionMyConnect(myAlgoTransactionToSign, userWalletAddress!);
+  const myAlgoTransactionStart = async (myAlgoTransactionToSign: FormattedMyAlgoTransaction): Promise<SignedTransaction> => {
+    return await signTransactionMyConnect(myAlgoTransactionToSign, userWalletAddress!);
   }
 
   const startConnectionPera = async (): Promise<void> => {

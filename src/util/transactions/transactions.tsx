@@ -1,13 +1,13 @@
 import { PeraWalletConnect } from "@perawallet/connect";
 import { myAlgoWalletConnect, peraWalletConnect } from "../connect";
 import { TransactionSigner } from "algosdk";
-import { TransactionStatusTypes } from "../../types";
+import { SignedTransaction, TransactionStatusTypes } from "../../types";
 
 export async function signTransactionPera(
     txn: any,
     message: any,
     wallet: string,
-) {
+): Promise<SignedTransaction> {
     const arrayTxn = [{
       txn,
       signers: [wallet],
@@ -25,7 +25,7 @@ export async function signTransactionPera(
 export async function signTransactionMyConnect(
   txn: any,
   wallet_address: string
-) {
+): Promise<SignedTransaction> {
   try {
     const signedTxn = await myAlgoWalletConnect().signTransaction(txn.toByte());
     const sendResponse = await checkedSignedTransaction(
@@ -38,7 +38,7 @@ export async function signTransactionMyConnect(
   }
 }
 
-async function checkedSignedTransaction(signed_txn: any) {
+async function checkedSignedTransaction(signed_txn: string | Uint8Array): Promise<SignedTransaction> {
   const checkedSignedTransaction =
     typeof signed_txn === "string"
       ? signed_txn
