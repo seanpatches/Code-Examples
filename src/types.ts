@@ -5,6 +5,11 @@ export enum ConnectionTypes {
   pera = "Pera"
 }
 
+export enum TransactionStatusTypes {
+  fail,
+  success
+}
+
 export type SuggestedParameters = {
   flatFee: boolean,
   fee: number,
