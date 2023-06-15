@@ -1,4 +1,4 @@
-import { fetchSuggestedParams } from "./services/requests";
+import { fetchSuggestedParams } from "../../services/requests";
 import algosdk from "algosdk";
 
 export const formatTransaction = async (
@@ -16,15 +16,14 @@ export const formatTransaction = async (
 	const enc = new TextEncoder();
 
 	const txn = isPera
-		? {
-				...suggestedParams,
+		? algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
 				from: address,
 				to: address,
+				assetIndex: 10458941,
 				amount: amountToPay,
-				type: "axfer",
-				assetIndex: 1,
-				note: enc.encode(note),
-		} : algosdk.makeAssetTransferTxnWithSuggestedParams(
+				suggestedParams
+			})
+		: algosdk.makeAssetTransferTxnWithSuggestedParams(
 				address,
 				address,
 				undefined,
@@ -33,7 +32,7 @@ export const formatTransaction = async (
 				enc.encode(note),
 				1,
 				suggestedParams
-		)
+			)
             
 	return txn;
 };
