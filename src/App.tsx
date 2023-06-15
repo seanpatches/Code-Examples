@@ -6,6 +6,7 @@ import ConnectButtons from './components/ConnectButtons';
 import { fetchSuggestedParams } from './services/requests';
 import LoadingScreen from './components/Loading';
 import TransactionButton from './components/TransactionButton';
+import { formatTransaction } from './formatTransaction';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -39,20 +40,23 @@ const App: FC = () => {
   }
 
   const launchTransaction = async() => {
-    //check connectionType in state, launch either transaction type accordingly
     //load during request wait
     setLoading(true);
-    const suggestedParamaters = await fetchSuggestedParams();
-    setLoading(false);
-    console.log(suggestedParamaters);
+    //check connectionType in state, launch either transaction type accordingly
+    const isPera = connectionType === ConnectionTypes.pera;
+    //amount and note hardcoded for the demo
+    const amount = 1;
+    const note = "Test Transaction on Algorand";
+    const transaction = await formatTransaction(isPera, amount, userWalletAddress!, note);
+    isPera ? peraTransactionStart(transaction) : myAlgoTransactionStart(transaction);
   }
 
-  const peraTransactionStart = () => {
-    
+  const peraTransactionStart = (peraTransactionToSign: any) => {
+    console.log(peraTransactionToSign)
   }
 
-  const myAlgoTransactionStart = () => {
-    
+  const myAlgoTransactionStart = (myAlgoTransactionToSign: any) => {
+    console.log(myAlgoTransactionToSign)
   }
 
   const startConnectionPera = async (): Promise<void> => {
