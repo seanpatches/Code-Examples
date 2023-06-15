@@ -12,3 +12,5 @@ export const walletConnect = new WalletConnect({
 export const peraWalletConnect = new PeraWalletConnect();
 
 export const myAlgoWalletConnect = () => new MyAlgo();
+
+export const checkForPeraConnection = () => peraWalletConnect.isConnected;

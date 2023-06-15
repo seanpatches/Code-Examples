@@ -15,6 +15,12 @@ const App: FC = () => {
   
   useEffect(() => {
     //check localstorage for continued connection on page load
+    peraWalletConnect.reconnectSession()
+    const isConnectedToPera = checkForPeraConnection();
+    const sustainedPeraWallet = peraWalletConnect?.connector?.accounts[0];
+    if(isConnectedToPera && sustainedPeraWallet) {
+      setUserConnection(sustainedPeraWallet, ConnectionTypes.pera);
+    }
   }, [])
 
   const setUserConnection = (userAlgoWallet: string, connectionType: ConnectionTypes): void => {
@@ -36,7 +42,13 @@ const App: FC = () => {
   }
 
   const startConnectionPera = async (): Promise<void> => {
-    //prompt Pera login
+    //check for sustained connection
+    const isConnectedToPera = checkForPeraConnection();
+    const sustainedPeraWallet = peraWalletConnect?.connector?.accounts[0];
+    if(isConnectedToPera && sustainedPeraWallet) {
+      setUserConnection(sustainedPeraWallet, ConnectionTypes.pera);
+    }
+    
     try {
       const userAddresses = await peraWalletConnect.connect();
       const userAlgoWallet = userAddresses[0];
@@ -50,8 +62,6 @@ const App: FC = () => {
   }
 
   const startConnectionMyAlgo = async (): Promise<void> => {
-    //check for sustained connection
-
     try {
       const userAddresses = await myAlgoWalletConnect().connect();
       const userAlgoWallet = userAddresses[0].address;
