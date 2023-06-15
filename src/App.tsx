@@ -7,6 +7,7 @@ import LoadingScreen from './components/Loading';
 import TransactionButtons from './components/TransactionButton';
 import { formatTransaction } from './util/transactions/formatTransaction';
 import { signTransactionMyConnect, signTransactionPera } from './util/transactions/transactions';
+import { clearAllTimeouts } from './helpers/timeout';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -93,6 +94,8 @@ const App: FC = () => {
         ? setUserConnection(userAlgoWallet, ConnectionTypes.pera)
         : alert("No found wallet.")
     } catch(err) {
+        peraWalletConnect.disconnect();
+        clearAllTimeouts();
         alert("Error completing wallet connection.")
     }
   }
@@ -116,7 +119,7 @@ const App: FC = () => {
       <div className="app-container">
         <h2>Algorand Connector</h2>
         <h6 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h6>
-        <div className={"connect-button-container"}>{"Connect Now"}
+        <div className={"connect-button-container"}>{!isConnected && "Connect Now"}
           {isConnected ? (
             <TransactionButtons disconnectWallet={disconnectWallet} launchTransaction={launchTransaction} />
           ) : (
