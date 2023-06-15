@@ -16,17 +16,25 @@ const App: FC = () => {
   useEffect(() => {
     //check localstorage for continued connection on page load
     peraWalletConnect.reconnectSession()
-    const isConnectedToPera = checkForPeraConnection();
-    const sustainedPeraWallet = peraWalletConnect?.connector?.accounts[0];
-    if(isConnectedToPera && sustainedPeraWallet) {
-      setUserConnection(sustainedPeraWallet, ConnectionTypes.pera);
-    }
-  }, [])
+    peraSustainedCheck();
+  })
 
   const setUserConnection = (userAlgoWallet: string, connectionType: ConnectionTypes): void => {
     setUserWalletAddress(userAlgoWallet);
     setConnectionType(connectionType);
     setConnected(true);
+  }
+
+  const peraSustainedCheck = (): boolean => {
+    const isConnectedToPera = checkForPeraConnection();
+    const sustainedPeraWallet = peraWalletConnect?.connector?.accounts[0];
+    if(isConnectedToPera && sustainedPeraWallet) {
+      //reconnect, alter the state, and return true for to act as blocker
+      setUserConnection(sustainedPeraWallet, ConnectionTypes.pera);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   const launchTransaction = () => {
@@ -43,11 +51,8 @@ const App: FC = () => {
 
   const startConnectionPera = async (): Promise<void> => {
     //check for sustained connection
-    const isConnectedToPera = checkForPeraConnection();
-    const sustainedPeraWallet = peraWalletConnect?.connector?.accounts[0];
-    if(isConnectedToPera && sustainedPeraWallet) {
-      setUserConnection(sustainedPeraWallet, ConnectionTypes.pera);
-    }
+    const sustainedPeraWallet = await peraSustainedCheck();
+    if(sustainedPeraWallet) return;
     
     try {
       const userAddresses = await peraWalletConnect.connect();
