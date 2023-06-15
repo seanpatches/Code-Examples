@@ -1,6 +1,4 @@
-import { PeraWalletConnect } from "@perawallet/connect";
 import { myAlgoWalletConnect, peraWalletConnect } from "../connect";
-import { TransactionSigner } from "algosdk";
 import { SignedTransaction, TransactionStatusTypes } from "../../types";
 
 export async function signTransactionPera(
@@ -8,18 +6,18 @@ export async function signTransactionPera(
     message: any,
     wallet: string,
 ): Promise<SignedTransaction> {
-    const arrayTxn = [{
-      txn,
-      signers: [wallet],
-    }]
-    
-    try {
-      const result = await peraWalletConnect.signTransaction([arrayTxn], wallet);
-      return await checkedSignedTransaction(result[0]);
-    } catch(err: unknown) {
-      console.log(err)
-      return { status: TransactionStatusTypes.fail}
-    }
+  const arrayTxn = [{
+    txn,
+    signers: [wallet],
+  }]
+  
+  try {
+    const result = await peraWalletConnect.signTransaction([arrayTxn], wallet);
+    return await checkedSignedTransaction(result[0]);
+  } catch(err: unknown) {
+    console.error(err)
+    return { status: TransactionStatusTypes.fail}
+  }
 }
   
 export async function signTransactionMyConnect(
@@ -33,7 +31,7 @@ export async function signTransactionMyConnect(
     );
     return sendResponse;
   } catch (err: unknown) {
-    console.log(err)
+    console.error(err)
     return { status: TransactionStatusTypes.fail}
   }
 }
