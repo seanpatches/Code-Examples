@@ -59,10 +59,10 @@ const App: FC = () => {
     const amount = 1;
     const note = "Test Transaction on Algorand";
     const transaction = await formatTransaction(isPera, amount, userWalletAddress!, note);
+    setLoading(false);
     const signedTransaction = isPera
       ? await peraTransactionStart(transaction)
       : await myAlgoTransactionStart(transaction);
-    setLoading(false);
     const { signed_txn, status } = signedTransaction;
 
     //if signed_txn was obtained, set it in state for visibility, and prepare to rawsend
