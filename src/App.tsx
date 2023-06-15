@@ -4,12 +4,14 @@ import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from '
 import { ConnectionTypes } from './types';
 import ConnectButtons from './components/ConnectButtons';
 import { fetchSuggestedParams } from './services/requests';
+import LoadingScreen from './components/Loading';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
   const [connected, setConnected] = useState<boolean>(false);
   const [transactionId, setTransactionId] = useState<string | null>(null);
   const [connectionType, setConnectionType] = useState<ConnectionTypes | null>();
+  const [loading, setLoading] = useState<boolean>(false);
   
   useEffect(() => {
     //check localstorage for continued connection on page load
@@ -37,8 +39,11 @@ const App: FC = () => {
 
   const launchTransaction = async() => {
     //check connectionType in state, launch either transaction type accordingly
+    //load during request wait
+    setLoading(true);
     const suggestedParamaters = await fetchSuggestedParams();
-    console.log(suggestedParamaters)
+    setLoading(false);
+    console.log(suggestedParamaters);
   }
 
   const peraTransactionStart = () => {
@@ -81,6 +86,7 @@ const App: FC = () => {
 
   return (
     <div className="App">
+      <LoadingScreen loading={loading}/>
       <header className="App-header">
         <h1>Algorand Connector</h1>
         <h4>{isConnected ? `Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>

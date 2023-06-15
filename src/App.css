@@ -50,3 +50,24 @@
   color: black;
   border-radius: 22px;
 }
+
+.loader {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  color: white;
+  font-size: 44px;
+  opacity: 90%;
+  height: 100%;
+  width: 100%;
+}
+
+.loader-show {
+  visibility: visible;
+}
+
+.loader-hide {
+  visibility: hidden;
+}
