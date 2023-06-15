@@ -12,8 +12,8 @@ const ConnectButtons: FC<ConnectButtonsProps> = ({
 
   return (
     <>
-      <button className="connect-button connect-button-my-algo" onClick={startConnectionMyAlgo}>My Algo</button>
-      <button className="connect-button connect-button-pera" onClick={startConnectionPera}>Pera Wallet</button>
+      <div className="connect-button connect-button-my-algo" onClick={startConnectionMyAlgo}>My Algo</div>
+      <div className="connect-button connect-button-pera" onClick={startConnectionPera}>Pera Wallet</div>
     </>
   )
 }

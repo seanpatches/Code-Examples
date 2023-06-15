@@ -9,8 +9,8 @@ const TransactionButtons: FC<TransactionButtonsProps> = ({ launchTransaction, di
 
   return (
     <>
-      <button className="transaction-button" onClick={launchTransaction}>Test Transaction</button>
-      <button className="transaction-button" onClick={disconnectWallet}>Disconnect Wallet</button>
+      <div className="transaction-button" onClick={launchTransaction}>Test Transaction</div>
+      <div className="transaction-button" onClick={disconnectWallet}>Disconnect Wallet</div>
     </>
   )
 }

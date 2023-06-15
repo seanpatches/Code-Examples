@@ -117,7 +117,7 @@ const App: FC = () => {
     <div className="App">
       <LoadingScreen loading={loading}/>
       <div className="app-container">
-        <h2>Algorand Connector</h2>
+        <h2 className="app-title">Algorand Connector</h2>
         <h6 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h6>
         <div className={"connect-button-container"}>{!isConnected && "Connect Now"}
           {isConnected ? (
