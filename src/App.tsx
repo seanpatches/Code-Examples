@@ -50,7 +50,7 @@ const App: FC = () => {
     }
   }
 
-  const launchTransaction = async() => {
+  const launchTransaction = async(): Promise<SignedTransaction> => {
     //load during request wait
     setSignedTransaction(null);
     setLoading(true);
@@ -72,6 +72,8 @@ const App: FC = () => {
     } else {
       alert("An error has occurred in signing your transaction.")
     }
+    
+    return signedTransaction;
   }
 
   const peraTransactionStart = async (peraTransactionToSign: FormattedPeraTransaction ): Promise<SignedTransaction> => {
