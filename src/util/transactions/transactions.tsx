@@ -15,7 +15,7 @@ export async function signTransactionPera(
     
     try {
       const result = await peraWalletConnect.signTransaction([arrayTxn], wallet);
-      return await result[0];
+      return await checkedSignedTransaction(result[0]);
     } catch(err: unknown) {
       console.log(err)
       return { status: TransactionStatusTypes.fail}
@@ -28,11 +28,25 @@ export async function signTransactionMyConnect(
 ) {
   try {
     const signedTxn = await myAlgoWalletConnect().signTransaction(txn.toByte());
-    const sendResponse = Buffer.from(signedTxn.blob).toString("base64")
+    const sendResponse = await checkedSignedTransaction(
+      Buffer.from(signedTxn.blob).toString("base64")
+    );
     return sendResponse;
   } catch (err: unknown) {
     console.log(err)
     return { status: TransactionStatusTypes.fail}
+  }
+}
+
+async function checkedSignedTransaction(signed_txn: any) {
+  const checkedSignedTransaction =
+    typeof signed_txn === "string"
+      ? signed_txn
+      : Buffer.from(signed_txn).toString("base64");
+  if (checkedSignedTransaction) {
+    return { status: TransactionStatusTypes.success, signed_txn: checkedSignedTransaction };
+  } else {
+    return { status: TransactionStatusTypes.fail};
   }
 }
   
