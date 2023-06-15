@@ -5,7 +5,7 @@ import { ConnectionTypes } from './types';
 import ConnectButtons from './components/ConnectButtons';
 import { fetchSuggestedParams } from './services/requests';
 import LoadingScreen from './components/Loading';
-import TransactionButton from './components/TransactionButton';
+import TransactionButtons from './components/TransactionButton';
 import { formatTransaction } from './formatTransaction';
 
 const App: FC = () => {
@@ -17,9 +17,15 @@ const App: FC = () => {
   
   useEffect(() => {
     //check localstorage for continued connection on page load
-    peraWalletConnect.reconnectSession()
+    peraWalletConnect.reconnectSession();
     peraSustainedCheck();
   })
+
+  const disconnectWallet = () => {
+    setUserWalletAddress(null);
+    setConnectionType(null);
+    setConnected(false);
+  }
 
   const setUserConnection = (userAlgoWallet: string, connectionType: ConnectionTypes): void => {
     setUserWalletAddress(userAlgoWallet);
@@ -97,7 +103,7 @@ const App: FC = () => {
         <h4 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
         <div className={`connect-button-container`}>{'Connect Now'}
           {isConnected ? (
-              <TransactionButton launchTransaction={launchTransaction} />
+              <TransactionButtons disconnectWallet={disconnectWallet} launchTransaction={launchTransaction} />
             ) : (
               <ConnectButtons startConnectionMyAlgo={startConnectionMyAlgo} startConnectionPera={startConnectionPera} />
           )}
