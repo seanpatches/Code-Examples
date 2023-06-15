@@ -1,9 +1,8 @@
 import './App.css';
 import React, { FC, useEffect, useState } from 'react';
 import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './util/connect';
-import { ConnectionTypes } from './types';
+import { ConnectionTypes, FormattedMyAlgoTransaction, FormattedPeraTransaction } from './types';
 import ConnectButtons from './components/ConnectButtons';
-import { fetchSuggestedParams } from './services/requests';
 import LoadingScreen from './components/Loading';
 import TransactionButtons from './components/TransactionButton';
 import { formatTransaction } from './formatTransaction';
@@ -58,11 +57,11 @@ const App: FC = () => {
     isPera ? peraTransactionStart(transaction) : myAlgoTransactionStart(transaction);
   }
 
-  const peraTransactionStart = (peraTransactionToSign: any) => {
+  const peraTransactionStart = (peraTransactionToSign: FormattedPeraTransaction ) => {
     console.log(peraTransactionToSign)
   }
 
-  const myAlgoTransactionStart = (myAlgoTransactionToSign: any) => {
+  const myAlgoTransactionStart = (myAlgoTransactionToSign: FormattedMyAlgoTransaction) => {
     console.log(myAlgoTransactionToSign)
   }
 
