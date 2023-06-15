@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { checkForPeraConnection, myAlgoWalletConnect, peraWalletConnect } from './util/connect';
 import { ConnectionTypes } from './types';
 import ConnectButtons from './components/ConnectButtons';
+import { fetchSuggestedParams } from './services/requests';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -34,9 +35,10 @@ const App: FC = () => {
     }
   }
 
-  const launchTransaction = () => {
+  const launchTransaction = async() => {
     //check connectionType in state, launch either transaction type accordingly
-    console.log("transaction trigger");
+    const suggestedParamaters = await fetchSuggestedParams();
+    console.log(suggestedParamaters)
   }
 
   const peraTransactionStart = () => {
