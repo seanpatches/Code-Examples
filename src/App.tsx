@@ -87,14 +87,14 @@ const App: FC = () => {
     }
   }
 
-  const isConnected = userWalletAddress && connected;
+  const isConnected = userWalletAddress && connected && connectionType;
 
   return (
     <div className="App">
       <LoadingScreen loading={loading}/>
       <header className="App-header">
         <h1>Algorand Connector</h1>
-        <h4 className="button-header">{isConnected ? `Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
+        <h4 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h4>
         <div className={`connect-button-container`}>{'Connect Now'}
           {isConnected ? (
               <TransactionButton launchTransaction={launchTransaction} />
