@@ -119,13 +119,13 @@ const App: FC = () => {
       <div className="app-container">
         <h2 className="app-title">Algorand Connector</h2>
         <h6 className="button-header">{isConnected ? `${connectionType} Wallet: ${userWalletAddress}` : "Connect your wallet using Pera or MyAlgo"}</h6>
-        <div className={"connect-button-container"}>{!isConnected && "Connect Now"}
+        <div className={"connect-button-container"}>
           {isConnected ? (
             <TransactionButtons disconnectWallet={disconnectWallet} launchTransaction={launchTransaction} />
           ) : (
             <ConnectButtons startConnectionMyAlgo={startConnectionMyAlgo} startConnectionPera={startConnectionPera} />
           )}
-          <h4 className="button-footer">{signedTransaction ? `Signed Transaction:\n${signedTransaction}` : "Please ensure you are connected to TestNet"}</h4>
+          <h4 className={`button-footer ${signedTransaction && "showing-transaction"}`}>{signedTransaction ? `Signed Transaction:\n${signedTransaction}` : "Please ensure you are connected to TestNet"}</h4>
         </div>
       </div>
     </div>

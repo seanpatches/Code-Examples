@@ -28,6 +28,7 @@
   width: 80%;
   word-break: break-all;
   margin: 16px;
+  height: 35px;
 }
 
 .connect-button-container {
@@ -46,7 +47,7 @@
   cursor: pointer;
   font-size: 16px;
   outline: none;
-
+  font-weight: bold;
 }
 
 .connect-button:hover {
@@ -69,11 +70,35 @@
   box-shadow: none;
   font-size: 16px;
   outline: none;
+  font-weight: bold;
+}
+
+.transaction-button:hover {
+  opacity: 80%;
+}
+
+.transaction-button:active {
+  opacity: 60%;
+  outline: 2px white solid;
 }
 
 .button-footer {
   width: 80%;
   word-break: normal;
+  width: 80%;
+  height: 200px;
+  overflow: hidden;
+}
+
+@media (max-width: 650px) {
+  .button-footer {
+    font-size: 12px;
+  }
+}
+
+.showing-transaction {
+  word-break: break-word;
+  font-size: 16px;
 }
 
 .loader {
