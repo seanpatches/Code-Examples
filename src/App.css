@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.connect-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.connect-button {
+  padding: 12px;
+  width: 100px;
+  margin-top: 10px;
+  color: black;
+  border-radius: 22px;
+}
