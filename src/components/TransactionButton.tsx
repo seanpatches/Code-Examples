@@ -6,6 +6,7 @@ type TransactionButtonsProps = {
 };
 
 const TransactionButtons: FC<TransactionButtonsProps> = ({ launchTransaction, disconnectWallet }) => {
+  
   return (
     <>
       <div className="transaction-button" onClick={launchTransaction}>Test Transaction</div>
