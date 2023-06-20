@@ -8,7 +8,7 @@ import TransactionButtons from './components/TransactionButton';
 import { formatTransaction } from './util/transactions/formatTransaction';
 import { signTransactionMyConnect, signTransactionPera } from './util/transactions/transactions';
 import { clearAllTimeouts } from './helpers/timeout';
-import { throwErrow } from './helpers/errors';
+import { errorHandler, throwError } from './helpers/errors';
 
 const App: FC = () => {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
@@ -95,7 +95,7 @@ const App: FC = () => {
       //set wallet in state to retrieved wallet, if found, if not throw error
       userAlgoWallet
         ? setUserConnection(userAlgoWallet, ConnectionTypes.pera)
-        : throwErrow("No wallet found")
+        : throwError("No wallet found")
     } catch(err: unknown) {
       peraWalletConnect.disconnect();
       clearAllTimeouts();
@@ -103,7 +103,7 @@ const App: FC = () => {
       if((err as Error).message && (err as Error).message === "Connect modal is closed by user"){
         return;
       } else {
-        alert((err as Error).message)
+        errorHandler(err);
       }
     }
   }
@@ -115,9 +115,9 @@ const App: FC = () => {
       //set wallet in state to retrieved wallet, if found, if not throw error
       userAlgoWallet
         ? setUserConnection(userAlgoWallet, ConnectionTypes.myAlgo)
-        : throwErrow("No wallet found")
+        : throwError("No wallet found")
     } catch(err: unknown) {
-        alert((err as Error).message || "Error completing wallet connection.")
+        errorHandler(err);
     }
   }
 
