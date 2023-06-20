@@ -8,9 +8,9 @@ export const formatTransaction = async (
 	note: string
 ) => {
 	//full units are in millionths
-  const million = 1000000;
+  	const million = 1000000;
 	const amountToPay = Math.round(amount * million);
-  const testnetUSDC = 10458941;
+ 	const testnetUSDC = 10458941;
 
 	const suggestedParams = await fetchSuggestedParams();
 	//hard-code to 5 for 
